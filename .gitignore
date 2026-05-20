@@ -1,0 +1,14 @@
+# macOS
+.DS_Store
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.pytest_cache/
+
+# Runtime cache (user-specific analysis cache)
+skills/codebase-visualizer/cache/
+
+# Test fixtures
+tests/
