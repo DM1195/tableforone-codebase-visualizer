@@ -74,4 +74,4 @@ rm -rf /tmp/codebase-viz-install
 
 ---
 
-Made by [Durva Mathure](https://tableforone.co) / [@durva](https://x.com/durvamathure)
+Made by [Durva Mathure](https://www.linkedin.com/in/durvamathure/) / [Table For One](https://oneplease.substack.com)
