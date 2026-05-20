@@ -8,6 +8,7 @@
     {
       "name": "codebase-visualizer",
       "description": "Interactive browser visualization for any codebase. App Flow view for Next.js shows pages, components, data queries, tables, and navigation. Function Map shows every function with callers/callees, dead code detection, and AI-generated explanations with Cursor fix prompts.",
+      "version": "1.0.0",
       "source": "./",
       "author": {
         "name": "Durva Mathure"
