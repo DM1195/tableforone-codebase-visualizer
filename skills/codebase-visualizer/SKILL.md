@@ -1,6 +1,7 @@
 ---
 name: codebase-visualizer
-description: Visualize any codebase as an interactive function map with App Flow view. Shows every function as a block, who calls it, dead code, linter errors, and AI-generated plain-English explanations with Cursor fix prompts. For Next.js projects, also shows App Flow: rich page cards with components, what each component queries and where it navigates, tables and services with call counts. Arrows target specific components inside page cards.
+description: >-
+  Visualize any codebase as an interactive function map with App Flow view. Shows every function as a block, who calls it, dead code, linter errors, and AI-generated plain-English explanations with Cursor fix prompts. For Next.js projects, also shows App Flow: rich page cards with components, what each component queries and where it navigates, tables and services with call counts. Arrows target specific components inside page cards.
 ---
 
 # Codebase Visualizer
@@ -21,16 +22,12 @@ pip install tree-sitter tree-sitter-typescript
 
 tree-sitter is optional — the skill falls back to regex parsing if not installed, but component detection is less accurate.
 
-## Skill directory
-
-The Python scripts are colocated with this SKILL.md file. The system prompt above shows "Base directory for this skill: <absolute-path>" — that is `SKILL_DIR`. Use it in every command that follows. Do not substitute a hardcoded path.
-
 ## Step 0: Sanity check
 
 Before running anything, verify the skill files exist:
 
 ```bash
-ls $SKILL_DIR/analyze.py $SKILL_DIR/server.py $SKILL_DIR/flow_analyzer.py $SKILL_DIR/page_parser.py
+ls ~/.claude/skills/codebase-visualizer/analyze.py ~/.claude/skills/codebase-visualizer/server.py ~/.claude/skills/codebase-visualizer/flow_analyzer.py ~/.claude/skills/codebase-visualizer/page_parser.py
 ```
 
 If any file is missing, abort and tell the user: "Skill file missing: `<path>`. Re-install the codebase-visualizer skill."
@@ -53,7 +50,7 @@ If rg not found: "Install ripgrep: `brew install ripgrep`"
 ## Step 3: Run analysis
 
 ```bash
-python3 $SKILL_DIR/analyze.py <PROJECT_PATH>
+python3 ~/.claude/skills/codebase-visualizer/analyze.py <PROJECT_PATH>
 ```
 
 Parse the JSON output. You now have a list of all functions with:
@@ -123,7 +120,7 @@ ls <PROJECT_PATH>/app 2>/dev/null && echo "nextjs" || echo "not-nextjs"
 If Next.js, run:
 
 ```bash
-python3 $SKILL_DIR/flow_analyzer.py <PROJECT_PATH> > /tmp/codebase-flow-<timestamp>.json 2>/tmp/flow-analyzer-stderr.txt
+python3 ~/.claude/skills/codebase-visualizer/flow_analyzer.py <PROJECT_PATH> > /tmp/codebase-flow-<timestamp>.json 2>/tmp/flow-analyzer-stderr.txt
 cat /tmp/flow-analyzer-stderr.txt
 ```
 
@@ -191,7 +188,7 @@ else: print('PASS — all descriptions present')
 If FAIL: go back and fill in the missing descriptions before continuing.
 
 Also write each file's parsed entry to the cache:
-- Cache path: `$SKILL_DIR/cache/<sha256-of-project-path>/<sha256-of-file-path>.json`
+- Cache path: `~/.claude/skills/codebase-visualizer/cache/<sha256-of-project-path>/<sha256-of-file-path>.json`
 - Get sha256: `python3 -c "import hashlib; print(hashlib.sha256('<path>'.encode()).hexdigest()[:16])"`
 - Write the page/component object with `file_hash` field populated.
 
@@ -201,10 +198,10 @@ Run in background. Pass both files if App Flow was generated:
 
 ```bash
 # Next.js projects (with flow):
-python3 $SKILL_DIR/server.py /tmp/codebase-viz-<timestamp>.json /tmp/codebase-flow-<timestamp>.json 8742
+python3 ~/.claude/skills/codebase-visualizer/server.py /tmp/codebase-viz-<timestamp>.json /tmp/codebase-flow-<timestamp>.json 8742
 
 # Other projects (function map only):
-python3 $SKILL_DIR/server.py /tmp/codebase-viz-<timestamp>.json 8742
+python3 ~/.claude/skills/codebase-visualizer/server.py /tmp/codebase-viz-<timestamp>.json 8742
 ```
 
 Then tell the user:
